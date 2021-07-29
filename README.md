@@ -48,11 +48,11 @@ with open('file.bin', 'rb') as f:
 
 Unpack this list using C/C++:
 ```cpp
-    FILE *f = fopen("file.bin", "rb");
-    const int n = 3;
-    int16_t buff[n];
-    fread(buff, sizeof(int16_t), n, f);
-    for (int i = 0; i < n; i++) printf("%d ", buff[i] );
+FILE *f = fopen("file.bin", "rb");
+const int n = 3;
+int16_t buff[n];
+fread(buff, sizeof(int16_t), n, f);
+for (int i = 0; i < n; i++) printf("%d ", buff[i] );
 ```
 
 

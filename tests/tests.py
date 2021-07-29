@@ -1,6 +1,6 @@
 import unittest
 
-from pydumper.pydumper import (
+from pycerializer.pycerializer import (
     pack_list_num, 
     unpack_list_num,
     pack_list_2d_num,
@@ -15,14 +15,14 @@ class TestStringMethods(unittest.TestCase):
 
     def test_pack_list_num(self):
         original = (1, 123, 24323, 21)
-        packed = pack_list_num(original, 'int16', 'little')
-        unpacked = unpack_list_num(*packed, 'int16', 'little')
+        packed = pack_list_num(original, 'int16_t', 'little')
+        unpacked = unpack_list_num(*packed, 'int16_t', 'little')
         self.assertEqual(original, unpacked[0])
 
     def test_pack_list_2d_num(self):
         original = ((1, 123), (243234, 21))
-        packed = pack_list_2d_num(original, 'int32', 'little')
-        unpacked = unpack_list_2d_num(packed[0], (2, 2), 'int32', 'little')
+        packed = pack_list_2d_num(original, 'int32_t', 'little')
+        unpacked = unpack_list_2d_num(packed[0], (2, 2), 'int32_t', 'little')
         self.assertEqual(original, unpacked[0])
 
     def test_pack_dict(self):
@@ -36,10 +36,10 @@ class TestStringMethods(unittest.TestCase):
 
         d_map = {
             'name': 'string',
-            'age': 'int8',
-            'height': 'int32',
+            'age': 'int8_t',
+            'height': 'int32_t',
             'surname': 'string',
-            'weight': 'int8'
+            'weight': 'int8_t'
         }
 
         packed = pack_dict(original, d_map)
@@ -71,10 +71,10 @@ class TestStringMethods(unittest.TestCase):
 
         d_map = {
             'name': 'string',
-            'age': 'int8',
-            'height': 'int32',
+            'age': 'int8_t',
+            'height': 'int32_t',
             'surname': 'string',
-            'weight': 'int8'
+            'weight': 'int8_t'
         }
 
 

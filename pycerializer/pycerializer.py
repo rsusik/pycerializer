@@ -80,7 +80,7 @@ def _get_endianness(
 
 def pack_list_num(
     l : Iterable[int], 
-    t : Optional[str] = 'int64', 
+    t : Optional[str] = 'int64_t', 
     e : Optional[str] = 'little'
 ) -> Tuple[bytes, int]:
     '''
@@ -96,7 +96,7 @@ def pack_list_num(
     :param e: endianess.
 
     Example:
-    packed = pack_list_num([1, 2, 3], 'int16', 'little')
+    packed = pack_list_num([1, 2, 3], 'int16_t', 'little')
     '''
     e = _get_endianness(e)
     t = _get_num_type(t)
@@ -107,7 +107,7 @@ def pack_list_num(
 def unpack_list_num(
     buffer : bytes, 
     n : int, 
-    t : Optional[str] = 'int64', 
+    t : Optional[str] = 'int64_t', 
     e : Optional[str] = 'little'
 ) -> Tuple[int]:
     '''
@@ -124,7 +124,7 @@ def unpack_list_num(
     :param e: endianess.
 
     Example:
-    unpacked = unpack_list_num(*packed, 'int16', 'little')
+    unpacked = unpack_list_num(*packed, 'int16_t', 'little')
     print(unpacked) # ( [1, 2, 3], 3 )
     '''
     e = _get_endianness(e)
@@ -135,7 +135,7 @@ def unpack_list_num(
 
 def pack_list_2d_num(
     l : Iterable[Iterable[int]], 
-    t : Optional[str] = 'int64', 
+    t : Optional[str] = 'int64_t', 
     e : Optional[str] = 'little'
 ) -> bytes:
     '''
@@ -154,7 +154,7 @@ def pack_list_2d_num(
     :param e: endianess.
 
     Example:
-    packed = pack_list_num([1, 2, 3], 'int16', 'little')
+    packed = pack_list_num([1, 2, 3], 'int16_t', 'little')
     '''
     return pack_list_num([x for y in l for x in y], t, e)
 
@@ -162,7 +162,7 @@ def pack_list_2d_num(
 def unpack_list_2d_num(
     buffer : bytes, 
     shape : Tuple[int, int], 
-    t : Optional[str] = 'int64', 
+    t : Optional[str] = 'int64_t', 
     e : Optional[str] = 'little'
 ) -> Tuple[Tuple[Tuple[int]], Tuple[int, int]]:
     '''
@@ -180,7 +180,7 @@ def unpack_list_2d_num(
     :param e: endianess.
 
     Example:
-    unpacked = unpack_list_2d_num(packed[0], (2, 2), 'int32', 'little')
+    unpacked = unpack_list_2d_num(packed[0], (2, 2), 'int32_t', 'little')
     '''
     first_dim = shape[0]
     second_dim = shape[1]
@@ -193,11 +193,42 @@ def pack_dict(
     key_type_mapping : Dict, 
     e : Optional[str] = 'little', 
     enc : Optional[str] = 'utf-8', 
-    size_type : Optional[str] = 'int64'
+    size_type : Optional[str] = 'int64_t'
 ) -> bytes:
     '''
-    Packs only those that are listed in key_type_mapping in given order.
-    Returns bytes and size.
+    Packs the dictionary into bytes but only those 
+    elements that are listed in `key_type_mapping`
+    and in given order.
+
+    Returns bytes and size of the structure.
+
+    Parameters:
+    :param d: Python dictionary,
+    :param key_type_mapping: a dictionary with key / type mapping,
+    :param e: endianess,
+    :param enc: encoding (in case of strings),
+    :param size_type: type of the number which indicates length of the string (only for strings),
+
+    Example:
+    ```
+    original = {
+        'name': b'name 1',
+        'age': 34,
+        'height': 177,
+        'surname': b'surname 1',
+        'weight': 86
+    }
+
+    d_map = {
+        'name': 'string',
+        'age': 'int8_t',
+        'height': 'int32_t',
+        'surname': 'string',
+        'weight': 'int8_t'
+    }
+
+    packed = pack_dict(original, d_map)
+    ```
     '''
     e = _get_endianness(e)
     size_type = _get_num_type(size_type)
@@ -225,10 +256,40 @@ def unpack_dict(
     offset : int = None, 
     e : Optional[str] = 'little', 
     enc : Optional[str] = 'utf-8', 
-    size_type : Optional[str] = 'int64'
+    size_type : Optional[str] = 'int64_t'
 ) -> Dict:
     '''
-    
+    Unpacks the bytes into dictionary.
+
+    Returns a dictionary.
+
+    Parameters:
+    :param b: bytes (packed dictionary),
+    :param key_type_mapping: a dictionary with key / type mapping that was used for packing,
+    :param e: endianess,
+    :param enc: encoding (in case of strings),
+    :param size_type: type of the number which indicates length of the string (only for strings),
+
+    Example:
+    ```
+    original = {
+        'name': b'name 1',
+        'age': 34,
+        'height': 177,
+        'surname': b'surname 1',
+        'weight': 86
+    }
+
+    d_map = {
+        'name': 'string',
+        'age': 'int8_t',
+        'height': 'int32_t',
+        'surname': 'string',
+        'weight': 'int8_t'
+    }
+
+    packed = pack_dict(original, d_map)
+    ```
     '''
     e = _get_endianness(e)
     size_type = _get_num_type(size_type)
@@ -258,7 +319,7 @@ def pack_list_dict(
     key_type_mapping : Dict, 
     e : Optional[str] = 'little', 
     enc : Optional[str] = 'utf-8', 
-    size_type : Optional[str] = 'int64'
+    size_type : Optional[str] = 'int64_t'
 ) -> bytes:
     '''
     
@@ -276,7 +337,7 @@ def unpack_list_dict(
     number_of_elements : int, 
     e : Optional[str] = 'little', 
     enc : Optional[str] = 'utf-8', 
-    size_type : Optional[str] = 'int64'
+    size_type : Optional[str] = 'int64_t'
 ) -> Iterable[Dict]:
     '''
     
@@ -308,7 +369,10 @@ def get_c_struct(
     name : str, 
     e : Optional[str] = 'little'
 ) -> str:
-    '''Works only for dict with all numeric types'''
+    '''
+    Returns the C structure.
+    Note: Works only for dict with all numeric types
+    '''
     e = _get_endianness(e)
     out = f'struct {name} {{\n'
     for key in key_type_mapping.keys():

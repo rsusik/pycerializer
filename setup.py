@@ -1,9 +1,9 @@
 import io
 from setuptools import setup, find_packages
-from pydumper import __version__
+from pycerializer import __version__
 
 setup(
-    name="pydumper",
+    name="pycerializer",
     version=__version__,
     author="Robert Susik",
     author_email="robert.susik@gmail.com",
@@ -16,9 +16,11 @@ setup(
     ),
     long_description=io.open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
-    python_requires=">=3.0",
+    python_requires=">=3.5",
     entry_points={},
     package_data={},
+    package_dir={"": "."},
+    packages=find_packages(where="."),
     #url="",
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",

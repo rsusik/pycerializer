@@ -11,24 +11,19 @@ endianness_map = {
 
 
 num_type_map = {
-    'int8': 'b',
-    'uint8': 'B',
-    'int16': 'h',
-    'uint16': 'H',
-    'int32': 'i',
-    'uint32': 'I',
-    'int64': 'q',
-    'uint64': 'Q',
-    'b': 'b', 'B': 'B',
-    'h': 'h', 'H': 'H',
-    'i': 'i', 'I': 'I',
-    'q': 'q', 'Q': 'Q'
+    'int8_t': 'b',
+    'uint8_t': 'B',
+    'int16_t': 'h',
+    'uint16_t': 'H',
+    'int32_t': 'i',
+    'uint32_t': 'I',
+    'int64_t': 'q',
+    'uint64_t': 'Q',
 }
 
 
 str_type_map = {
     'string': 's',
-    's': 's'
 }
 
 
@@ -307,3 +302,17 @@ def size_of_dict(
         frmt += t
     return struct.calcsize(frmt)
 
+
+def get_c_struct(
+    key_type_mapping : Dict, 
+    name : str, 
+    e : Optional[str] = 'little'
+) -> str:
+    '''Works only for dict with all numeric types'''
+    e = _get_endianness(e)
+    out = f'struct {name} {{\n'
+    for key in key_type_mapping.keys():
+        t = key_type_mapping[key] # TODO: dodac mapowanie q na int64_t (w zasadzie to juz jest ale trzeba wywalic te 'q':'q')
+        out += f'\t{t} {key};\n'
+    out += '};\n'
+    return out

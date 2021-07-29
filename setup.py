@@ -1,13 +1,9 @@
 import io
 from setuptools import setup, find_packages
-from binpacker import __version__
-
-# def get_requirements():
-#     with open("requirements.txt") as fp:
-#         return [req for req in (line.strip() for line in fp) if req and not req.startswith("#")]
+from pydumper import __version__
 
 setup(
-    name="binpacker",
+    name="pydumper",
     version=__version__,
     author="Robert Susik",
     author_email="robert.susik@gmail.com",
@@ -20,13 +16,8 @@ setup(
     ),
     long_description=io.open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
-    #install_requires=get_requirements(),
     python_requires=">=3.0",
     entry_points={},
-    #package_dir={"": "."},
-    # packages = [
-    #     'binpacker'
-    # ],
     package_data={},
     #url="",
     classifiers=[
@@ -38,7 +29,7 @@ setup(
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Natural Language :: English",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.5", # Because of `typing`
         "Topic :: Software Development",
         "Topic :: System :: Archiving :: Compression",
         "Topic :: System :: Archiving :: Packaging",

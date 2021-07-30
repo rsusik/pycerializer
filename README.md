@@ -1,4 +1,4 @@
-# PyCerializer
+<img src="pycerializer.png" alt="PyCerializer" />
 
 PyCerializer is a lightweight module for Python serialization. 
 The aim of PyCerializer is to produce serialized data that 

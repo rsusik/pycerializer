@@ -21,7 +21,7 @@ setup(
     package_data={},
     package_dir={"": "."},
     packages=find_packages(where="."),
-    #url="",
+    url="https://github.com/rsusik/pycerializer",
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Developers",

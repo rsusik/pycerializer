@@ -1,6 +1,6 @@
 <img src="pycerializer.png" alt="PyCerializer" />
 
-PyCerializer is a lightweight module for Python serialization. 
+PyCerializer is a lightweight serialization module for Python. 
 The aim of PyCerializer is to produce serialized data that 
 can be easily read in other programming languages such 
 as C/C++ and others.
@@ -13,16 +13,18 @@ the PyCerializer use also `typing` module that was introduced
 in Python 3.5.
 
 ## Supported types:
-- [u]int64_t
-- [u]int32_t
-- [u]int16_t
-- [u]int8_t
-- string
-- structures
+
+- Numbers
+    - [u]int64_t
+    - [u]int32_t
+    - [u]int16_t
+    - [u]int8_t
+- Strings
+- Structures
 
 ## Endianess:
-- little
-- big
+- little,
+- big.
 
 ## Installation
 ```
@@ -54,7 +56,6 @@ int16_t buff[n];
 fread(buff, sizeof(int16_t), n, f);
 for (int i = 0; i < n; i++) printf("%d ", buff[i] );
 ```
-
 
 
 ## Limitation

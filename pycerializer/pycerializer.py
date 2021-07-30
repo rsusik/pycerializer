@@ -207,7 +207,7 @@ def pack_dict(
     :param key_type_mapping: a dictionary with key / type mapping,
     :param e: endianess,
     :param enc: encoding (in case of strings),
-    :param size_type: type of the number which indicates length of the string (only for strings),
+    :param size_type: type of the number which indicates length of the string (only for strings).
 
     Example:
     ```
@@ -268,7 +268,7 @@ def unpack_dict(
     :param key_type_mapping: a dictionary with key / type mapping that was used for packing,
     :param e: endianess,
     :param enc: encoding (in case of strings),
-    :param size_type: type of the number which indicates length of the string (only for strings),
+    :param size_type: type of the number which indicates length of the string (only for strings).
 
     Example:
     ```
@@ -320,9 +320,23 @@ def pack_list_dict(
     e : Optional[str] = 'little', 
     enc : Optional[str] = 'utf-8', 
     size_type : Optional[str] = 'int64_t'
-) -> bytes:
+) -> Tuple[bytes, int, int]:
     '''
-    
+    Packs the list of dictionaries into bytes (only 
+    those elements that are listed in `key_type_mapping`
+    and in given order).
+
+    Returns a tuple of:
+    - bytes,
+    - length of `l`,
+    - number of bytes.
+
+    Parameters:
+    :param l: iterable containing dictionaries,
+    :param key_type_mapping: a dictionary with key / type mapping,
+    :param e: endianess,
+    :param enc: encoding (in case of strings),
+    :param size_type: type of the number which indicates length of the string (only for strings).
     '''
     b = bytearray()
     for el in l:
@@ -338,9 +352,22 @@ def unpack_list_dict(
     e : Optional[str] = 'little', 
     enc : Optional[str] = 'utf-8', 
     size_type : Optional[str] = 'int64_t'
-) -> Iterable[Dict]:
+) -> Tuple[Iterable[Dict], int, int]:
     '''
-    
+    Unpacks the bytes into dictionary.
+
+    Returns a tuple of:
+    - tuple of dictionaries,
+    - `number_of_elements`,
+    - number of bytes.
+
+    Parameters:
+    :param b: bytes (packed list of `number_of_elements` dictionaries),
+    :param key_type_mapping: a dictionary with key / type mapping that was used for packing,
+    :param e: endianess,
+    :param enc: encoding (in case of strings),
+    :param size_type: type of the number which indicates length of the string (only for strings).
+
     '''
     offset = 0
     l = []
@@ -355,7 +382,16 @@ def size_of_dict(
     key_type_mapping : Dict, 
     e : Optional[str] = 'little'
 ) -> int:
-    '''Works only for dict with all numeric types'''
+    '''Calculates size of dict.
+
+    Note: works only for dict with all numeric types.
+    
+    Returns size of dict.
+
+    Parameters:
+    :param key_type_mapping: a dictionary with key / type mapping that was used for packing,
+    :param e: endianess.
+    '''
     e = _get_endianness(e)
     frmt = f'{e}'
     for key in key_type_mapping.keys():
@@ -371,7 +407,13 @@ def get_c_struct(
 ) -> str:
     '''
     Returns the C structure.
+
     Note: Works only for dict with all numeric types
+
+    Parameters:
+    :param key_type_mapping: a dictionary with key / type mapping that was used for packing,
+    :param name: structure name,
+    :param e: endianess.
     '''
     e = _get_endianness(e)
     out = f'struct {name} {{\n'

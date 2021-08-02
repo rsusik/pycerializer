@@ -1,4 +1,18 @@
-<img src="pycerializer.png" alt="PyCerializer" />
+<p align="center">
+    <img src="pycerializer.png" alt="PyCerializer" />
+</p>
+<p align="center">
+    <em>Lightweight serialization module for Python.</em>
+</p>
+<p align="center">
+<a href="https://pypi.org/project/pycerializer" target="_blank">
+    <img src="https://img.shields.io/pypi/v/pycerializer?color=%2334D058&label=pypi%20package" alt="Package version">
+</a>
+<a href="https://github.com/rsusik/pycerializer/blob/master/LICENSE" target="_blank">
+    <img src="https://img.shields.io/github/license/rsusik/pycerializer" alt="Package version">
+</a>
+</p>
+
 
 PyCerializer is a lightweight serialization module for Python. 
 The aim of PyCerializer is to produce serialized data that 

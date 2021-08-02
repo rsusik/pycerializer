@@ -11,7 +11,7 @@ from pycerializer.pycerializer import (
     unpack_list_dict
 )
 
-class TestStringMethods(unittest.TestCase):
+class TestPyCerializerMethods(unittest.TestCase):
 
     def test_pack_list_num(self):
         original = (1, 123, 24323, 21)

@@ -26,6 +26,21 @@ str_type_map = {
     'string': 's',
 }
 
+num_type_map_to_c = {
+    'int8_t': 'int8_t',
+    'uint8_t': 'uint8_t',
+    'int16_t': 'int16_t',
+    'uint16_t': 'uint16_t',
+    'int32_t': 'int32_t',
+    'uint32_t': 'uint32_t',
+    'int64_t': 'int64_t',
+    'uint64_t': 'uint64_t',
+}
+
+str_type_map_to_c = {
+    'string': 'char *'
+}
+
 
 def _get_num_type(
     t : str
@@ -64,6 +79,22 @@ def _get_type(
         return all_type_map[t]
     else:
         raise Exception(f'ERROR: Not supported type {t}')
+
+
+def _get_c_type(
+    t : str
+) -> str:
+    '''
+    
+    '''
+    all_type_map = {}
+    all_type_map.update(num_type_map_to_c)
+    all_type_map.update(str_type_map_to_c)
+    if t in all_type_map:
+        return all_type_map[t]
+    else:
+        raise Exception(f'ERROR: Not supported type {t}')
+
 
 
 def _get_endianness(
@@ -194,13 +225,15 @@ def pack_dict(
     e : Optional[str] = 'little', 
     enc : Optional[str] = 'utf-8', 
     size_type : Optional[str] = 'int64_t'
-) -> bytes:
+) -> Tuple[bytes, int]:
     '''
     Packs the dictionary into bytes but only those 
     elements that are listed in `key_type_mapping`
     and in given order.
 
-    Returns bytes and size of the structure.
+    Returns
+    - bytes and 
+    - size of the structure.
 
     Parameters:
     :param d: Python dictionary,
@@ -320,7 +353,7 @@ def pack_list_dict(
     e : Optional[str] = 'little', 
     enc : Optional[str] = 'utf-8', 
     size_type : Optional[str] = 'int64_t'
-) -> Tuple[bytes, int, int]:
+) -> Tuple[bytes, int, int, Iterable[int]]:
     '''
     Packs the list of dictionaries into bytes (only 
     those elements that are listed in `key_type_mapping`
@@ -329,7 +362,8 @@ def pack_list_dict(
     Returns a tuple of:
     - bytes,
     - length of `l`,
-    - number of bytes.
+    - size,
+    - size of each dictionary.
 
     Parameters:
     :param l: iterable containing dictionaries,
@@ -339,10 +373,12 @@ def pack_list_dict(
     :param size_type: type of the number which indicates length of the string (only for strings).
     '''
     b = bytearray()
+    sizes = []
     for el in l:
         packed = pack_dict(el, key_type_mapping, e, enc, size_type)
         b.extend(packed[0])
-    return b, len(l), len(b)
+        sizes.append(packed[1])
+    return b, len(l), len(b), sizes
 
 
 def unpack_list_dict(
@@ -416,9 +452,11 @@ def get_c_struct(
     :param e: endianess.
     '''
     e = _get_endianness(e)
-    out = f'struct {name} {{\n'
+    out = f'typedef struct _{name} {{\n'
+
     for key in key_type_mapping.keys():
-        t = key_type_mapping[key] # TODO: dodac mapowanie q na int64_t (w zasadzie to juz jest ale trzeba wywalic te 'q':'q')
-        out += f'\t{t} {key};\n'
-    out += '};\n'
+        t = key_type_mapping[key]
+        c_type = _get_c_type(t)
+        out += f'\t{c_type} {key};\n'
+    out += f'}} {name};\n'
     return out

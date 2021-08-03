@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="pycerializer.png" alt="PyCerializer" />
+    <img src="https://github.com/rsusik/pycerializer/blob/master/pycerializer.png" alt="PyCerializer" />
 </p>
 <p align="center">
     <em>Lightweight serialization module for Python.</em>

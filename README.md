@@ -50,7 +50,7 @@ pip install pycerializer
 ### Serialize the Python list and save to file:
 ```python
 original = (1, 123, 4321)
-packed = pack_list_num(original, 'int16', 'little')
+packed = pack_list_num(original, 'int16_t', 'little')
 with open('file.bin', 'wb') as f:
     f.write(packed)
 ```
@@ -59,7 +59,7 @@ with open('file.bin', 'wb') as f:
 ```python
 with open('file.bin', 'rb') as f:
     packed = f.read()
-    unpacked = unpack_list_num(*packed, 'int16', 'little')
+    unpacked = unpack_list_num(*packed, 'int16_t', 'little')
 ```
 
 ### Deserialize the list using C/C++:

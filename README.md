@@ -202,8 +202,4 @@ int main() {
 ```
 
 ## Limitation
-This module works well for flat data, and definitely, there is much more effort needed to store and read data than using, for example, `pickle`. 
-On the other hand, it may take much more effort to read pickled data in C++.
-Pycerializer was written ad-hoc for another project and was used for prototyping in Python, where there was a need to read the output in C++, which is the case where this module works quite well.
-The number of supported types is very limited but can be easily extended.
-Any contribution is welcome.
+This module is well-suited for handling flat data, though it requires more effort to store and retrieve data compared to simpler tools like Pickle. However, reading pickle-formatted data in C++ can be challenging, which is where this module proves advantageous. Pycerializer was initially developed as an ad-hoc solution for a Python prototyping project where the data output needed to be read in C++. In such scenarios, it performs effectively. Currently, the module supports a limited set of data types, but this can be easily extended. Contributions to enhance its functionality are welcome!
